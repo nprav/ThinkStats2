@@ -5,13 +5,14 @@ Copyright 2014 Allen B. Downey
 License: GNU GPLv3 http://www.gnu.org/licenses/gpl.html
 """
 
-from __future__ import print_function
+# from __future__ import print_function
 
 import sys
 from operator import itemgetter
 
 import first
 import thinkstats2
+import numpy as np
 
 
 def Mode(hist):
@@ -21,7 +22,12 @@ def Mode(hist):
 
     returns: value from Hist
     """
-    return 0
+    d = hist.GetDict()
+    vals = np.array(list(d.values()))
+    keys = np.array(list(d.keys()))
+    mode_keys = keys[vals==vals.max()]
+    mode = np.mean(mode_keys)
+    return mode
 
 
 def AllModes(hist):
@@ -31,7 +37,11 @@ def AllModes(hist):
 
     returns: iterator of value-freq pairs
     """
-    return []
+    return sorted(
+        list(hist.Items()),
+        key=lambda x: x[1],
+        reverse=True
+    )
 
 
 def main(script):
